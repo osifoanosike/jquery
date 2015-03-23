@@ -4,14 +4,16 @@ function SelectDivs() {
 
 SelectDivs.prototype = {
 
-  //question 2.1.1
+  //question 2.1.1: Select all of the div elements that have a class of “module”.
   selectModuleDivs: function() {
     var result = $('.module');
     console.log("All elements that have a class of 'module': ");
     console.log(result);
   },
 
-  //question 2.1.2
+  /**Question 2.1.2
+    Come up with three selectors that you could use to get the third item in the #myList unordered list. 
+    Which is the best to use? Why?**/
   selectListItems: function() {
     //selector1
     console.log("\nSelector 1: #myListItem");
@@ -23,7 +25,7 @@ SelectDivs.prototype = {
     var third_item_2 = $('#myList li:nth-child(3)');
     console.log(third_item_2);
 
-    //selector2
+    //selector3
     console.log("\nSelector 3: #myList li).get(2)");
     var third_item_3 = $('#myList li').get(2);
     console.log(third_item_3);
@@ -34,19 +36,19 @@ SelectDivs.prototype = {
       'Also the returned result is a jquery function, thus further DOM operatins can be performed on it.');
   },
 
-  //question 2.1 c
+  //question 2.1 c: Select the label for the search input using an attribute selector.
   selectFormLabel: function() {
     var label = $('label[for=q]');
     console.log('Label for search input: ' + label.text());
   },
 
-  //question 2.1 d
+  //question 2.1 d: Figure out how many elements on the page are hidden
   hiddenElementCount: function() {
     var count = $(':hidden').length;
     console.log('Number of hidden input elements: ' + count);
   },
 
-  //question 2.1 e
+  //question 2.1 e: Figure out how many image elements on the page have an alt attribute.
   imagesWithAltAttr: function() {
     var $images = $('img'), count = 0;
     $images.each(function(index) {
@@ -59,7 +61,7 @@ SelectDivs.prototype = {
     console.log('2.1 e) Number of images with \'alt\' attribute: ' + count);
   },
 
-  //question 2.1 f
+  //question 2.1 f: Select all of the odd table rows in the table body.
   oddTableRow: function() {
     var oddRows = $('table>tbody tr:odd');
     // console.log('2.1 e) Number of odd rows in tbody: ' + oddRows.forEach(function(item, index, array) { this.html(); }));
