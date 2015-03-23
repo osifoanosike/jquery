@@ -1,8 +1,8 @@
-function Traversal() {
+function DOMTraversal() {
 
 }
 
-Traversal.prototype = {
+DOMTraversal.prototype = {
 
   //question 2.2 a: Figure out how many image elements on the page have an alt attribute.
   log_img_attrs: function() {
@@ -42,7 +42,7 @@ Traversal.prototype = {
 
 
 $(document).ready(function(){
-  var traversal = new Traversal();
+  var traversal = new DOMTraversal();
   
   //2.2 a
   traversal.log_img_attrs();
