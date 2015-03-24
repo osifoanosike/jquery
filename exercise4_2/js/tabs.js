@@ -1,6 +1,6 @@
-function Tab() {
+function Tab(tab_content) {
   this.header_list = "";
-  this.tabcontents = $('div.module');
+  this.tabcontents = tab_content;
 }
 
 Tab.prototype = {
@@ -52,7 +52,8 @@ Tab.prototype = {
 }
 
 $(document).ready(function(){
-  tab = new Tab();
+  var modules = $('div.module');
+  tab = new Tab(modules);
   tab.init();
   tab.addEventHandlers();
   tab.show_first_tab();
