@@ -22,7 +22,6 @@ Tab.prototype = {
   },
 
   set_current_item: function(list_item){
-    console.log(list_item);
     $(list_item).siblings('.current').removeClass('current');//removes the last current item
     $(list_item).addClass('current');
   },
@@ -35,6 +34,12 @@ Tab.prototype = {
         .data('module', $(this))
         .appendTo('ul#tab_header');
     });
+  },
+
+  show_first_tab: function(){
+    var tab_header1 = $(this.header_list).find('li:first');
+    this.show_related_module(tab_header1);
+    this.set_current_item(tab_header1);
   },
 
   addEventHandlers: function(){
@@ -50,4 +55,5 @@ $(document).ready(function(){
   tab = new Tab();
   tab.init();
   tab.addEventHandlers();
+  tab.show_first_tab();
 });
