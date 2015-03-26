@@ -46,7 +46,7 @@ DivStack.prototype = {
 
     this.stack_container.on('click', 'div.stack_item', function(){
       if($(this).prevAll().length == 0 ){
-        $(this).fadeOut(300).remove();
+        $(this).fadeOut(400, function(){ $(this).remove(); });
       } else {
         $(this).css('border-color', '#ffa600');
       }
@@ -55,7 +55,6 @@ DivStack.prototype = {
     this.addButton.on('click', function(){
       that.add();
     });
-
   }
 }
 
