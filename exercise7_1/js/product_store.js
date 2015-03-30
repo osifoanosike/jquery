@@ -69,23 +69,29 @@ ProductStore.prototype = {
   filter: function() {
     var that = this, current_selection = null;
     $('#catalogue figure').hide();
-    current_selection = $('#catalogue figure').filter(function() {
-      if(that.filters.brands.length == 0){
 
-        if ( $.inArray($(this).data('color'), that.filters.colors) >= 0) { return true; }
+    if(this.filters.colors.length == 0 && this.filters.brands.length == 0) {
+      console.log('colors filter: ' + this.filters.colors.length );
+      console.log('brand filter: ' + this.filters.brands.length);
+      current_selection = $('#catalogue figure');
 
-      } else if(that.filters.colors.length == 0) {
+      console.log(current_selection);
+    } else {
 
-        if ( $.inArray($(this).data('brand'), that.filters.brands) >= 0) { return true; }
+      current_selection = $('#catalogue figure').filter(function() {
+        if(that.filters.brands.length == 0){
 
-      } else if( that.filters.brands.length > 0 && that.filters.colors.length > 0 ){
-        if($.inArray($(this).data('brand'), that.filters.brands) >= 0  && $.inArray($(this).data('color'), that.filters.colors) >= 0 ) { return true; }
-      
-      } else {
-        if( $(this).data('name') != "0") { return true; }
-      } 
-    });
-    console.log(current_selection);
+          if ( $.inArray($(this).data('color'), that.filters.colors) >= 0) { return true; }
+
+        } else if(that.filters.colors.length == 0) {
+
+          if ( $.inArray($(this).data('brand'), that.filters.brands) >= 0) { return true; }
+
+        } else if( that.filters.brands.length > 0 && that.filters.colors.length > 0 ){
+          if($.inArray($(this).data('brand'), that.filters.brands) >= 0  && $.inArray($(this).data('color'), that.filters.colors) >= 0 ) { return true; }  
+        }
+      });
+    }
 
     if( this.filters.availableOnly == "available") {
       console.log("show only available");
