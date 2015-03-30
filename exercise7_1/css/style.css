@@ -1,0 +1,34 @@
+
+#container {
+	margin: 0 auto;
+	width: 85%;
+	position: relative;
+}
+
+#filter_section {
+	float: left;
+}
+
+#catalogue {
+	float: right;
+	width: 80%;
+}
+
+figure.product-holder {
+	display:inline-block;
+	border-radius: 5px;
+	background-color: #fcfcfc;
+	padding: 2px;
+	border: 1px solid #fcfcfc;
+	margin: 3px;
+	cursor: pointer;
+}
+
+figure.product-holder:hover {
+	border: 1px solid #bbb;
+}
+
+div#filter_section li {
+	list-style-type: none;
+	font-size: 0.85em;
+}

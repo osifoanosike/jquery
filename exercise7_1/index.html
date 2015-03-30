@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <title>jQuery Fundamentals :: Home</title>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/product_store.js"></script>
+    <link href="css/reset.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+  </head>
+
+  <body>
+      <section id="container">
+        <div id="filter_section">
+          <ul id="brand_list" class="filter_param">
+            <p>Filter by brand</p>
+          </ul>
+
+          <ul id="color_list" class="filter_param">
+            <p>Filter a color</p>
+          </ul>
+
+          <div id="available-filter">
+            <div>
+              <input type="radio" name="availablity" value="all" id="check_show_all"/>
+              <label for="check_show_all">All Products</label>
+            </div>
+            <div>
+              <input type="radio" name="availablity" value="available" id="check_show_available"/>
+              <label for="check_show_available">Available Products</label>
+            </div>
+          </div>
+        </div>
+        
+        <div id="catalogue"></div>
+      </section>
+  </body>
+</html>
