@@ -9,11 +9,10 @@ BlogLoader.prototype = {
 	attach_target_divs: function(){
 		console.log('about to attach target divs');
 		var $target_div = $('<div>');
-		$('div#blog h3').each(function(){
-			$(this).after($target_div.clone(true))
-				.data('target_div', $($target_div));
-
-			// console.log($(this).data('target_div'));
+		$('div#blog h3').each(function(index){
+			var blog_target = $target_div.clone(true) 
+			$(this).after($(blog_target).attr('id', 'post' + (index+1) ))
+				.data('target_div', blog_target.attr('id') );
 		});
 	},
 
@@ -25,7 +24,6 @@ BlogLoader.prototype = {
 	addEventHandler: function() {
 		var that = this;
 		$('div#blog ul li a').on('click', function(e){
-			console.log(e.target.tagName);
 			e.preventDefault();
 			that.load_target_content($(this).parent());
 		})
