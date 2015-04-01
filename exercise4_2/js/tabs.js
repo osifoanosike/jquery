@@ -5,28 +5,28 @@ function Tab(tab_content) {
 
 Tab.prototype = {
   init: function() {
-    $('div.module').hide();
-    this.create_list();
-    this.setup_module();
+    this.tabcontents.hide();
+    this.createList();
+    this.setupModule();
+    this.addEventHandlers();
   },
 
-  create_list: function(){
+  createList: function(){
     this.header_list = $('<ul>', { 'id': 'tab_header' })
-      .insertBefore('div.module:first');
+      .insertBefore(this.tabcontents.first());
   },
 
-  show_related_module: function(list_item){
+  showRelatedModule: function(list_item){
     $(list_item).data('module')
       .show()
       .siblings('.module').hide();
   },
 
-  set_current_item: function(list_item){
-    $(list_item).siblings('.current').removeClass('current');//removes the last current item
-    $(list_item).addClass('current');
+  setCurrentItem: function(list_item){
+    $(list_item).addClass('current').siblings('.current').removeClass('current');//removes the last current item
   },
 
-  setup_module: function() {
+  setupModule: function() {
     this.tabcontents.each(function(index){
       var list_text = $(this).find('h2').text();
 
@@ -36,17 +36,17 @@ Tab.prototype = {
     });
   },
 
-  show_first_tab: function(){
+  showFirstTab: function(){
     var tab_header1 = $(this.header_list).find('li:first');
-    this.show_related_module(tab_header1);
-    this.set_current_item(tab_header1);
+    this.showRelatedModule(tab_header1);
+    this.setCurrentItem(tab_header1);
   },
 
   addEventHandlers: function(){
     var that = this;
-    this.header_list.on('click', function(e) {
-      that.show_related_module(e.target);
-      that.set_current_item(e.target);
+    this.header_list.find('li').on('click', function() {
+      that.showRelatedModule(this);
+      that.setCurrentItem(this);
     });
   }
 }
@@ -55,6 +55,5 @@ $(document).ready(function(){
   var modules = $('div.module');
   tab = new Tab(modules);
   tab.init();
-  tab.addEventHandlers();
-  tab.show_first_tab();
+  tab.showFirstTab();
 });
