@@ -50,15 +50,9 @@ SelectDivs.prototype = {
 
   //question 2.1 e: Figure out how many image elements on the page have an alt attribute.
   imagesWithAltAttr: function() {
-    var $images = $('img'), count = 0;
-    $images.each(function(index) {
-      var img_attr = $(this).attr('alt');
-      if ( img_attr !== undefined && img_attr !== false ) {
-        count++;
-      }
-    });
 
-    console.log('2.1 e) Number of images with \'alt\' attribute: ' + count);
+    var img_with_alt = $('img[attr!=""]');
+    console.log('2.1 e) Number of images with \'alt\' attribute: ' + img_with_alt.length);
   },
 
   //question 2.1 f: Select all of the odd table rows in the table body.
@@ -67,6 +61,7 @@ SelectDivs.prototype = {
     // console.log('2.1 e) Number of odd rows in tbody: ' + oddRows.forEach(function(item, index, array) { this.html(); }));
   }
 }
+
 
 
 $(document).ready(function(){
