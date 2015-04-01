@@ -12,8 +12,10 @@ Tab.prototype = {
   },
 
   createList: function(){
-    this.header_list = $('<ul>', { 'id': 'tab_header' })
-      .insertBefore(this.tabcontents.first());
+    this.header_list = $('<ul>', { 'id': 'tab_header' });
+
+    this.header_list.insertBefore(this.tabcontents.first());
+      console.log(this.header_list);
   },
 
   showRelatedModule: function(list_item){
@@ -27,12 +29,13 @@ Tab.prototype = {
   },
 
   setupModule: function() {
+    var that = this;
     this.tabcontents.each(function(index){
       var list_text = $(this).find('h2').text();
 
       $('<li>', {'id': 'tab_'  + index, 'text': list_text})
         .data('module', $(this))
-        .appendTo('ul#tab_header');
+        .appendTo(that.header_list);
     });
   },
 
