@@ -1,16 +1,3 @@
-
-/*
-6.2 Load content using JSON
-Open the file /exercises/index.html in your browser.
-Use the file /exercises/js/specials.js. Your task is to show the user details
- about the special for a given day when the user selects a day from the select dropdown.
-Append a target div after the form that's inside the #specials element;
- this will be where you put information about the special once you 
- receive it.
- Bind to the change event of the select element; when the 
- user changes the selection, 
- send an Ajax request to /exercises/data/specials.json.
-*/
 function ContentLoader(specials_section) {
   this.specials_section = specials_section
   this.cached_data = null;
@@ -30,44 +17,43 @@ ContentLoader.prototype = {
   addEventHandlers: function() {
     var that = this;
     this.specials_section.find('form select').on('change', function() {
-      that.get_json_data($(this))
+    that.display_special_info($(this).val());
     });
   },
 
-  display_special_info: function(data) {
-    console.log(data)    
-    var $title = $('<h3>', { text: data['title'] });
-    var $text = $('<p>', { text: data['text']});
-    var $img_tag  = $('<img>', { src: data['image'].slice(1) });
-    
-    this.specials_info_section.empty()
-      .attr('style', 'color: ' + data['color'])
-      .append($title)
-      .append($text)
-      .append($img_tag);
+  display_special_info: function(selected_day) {
+    var data = "";
+    if(this.cached_data !== null) {
+      data = this.display_data(selected_day, this.cached_data);
+    } else {
+      this.get_json_data(selected_day);
+    }
   },
 
-  prepare_display_data: function(selected_day, data) {
+  display_data: function(selected_day, data) {
+    console.log('selected_day: ' + selected_day + 'data: ' + data);
     var that = this;
     $.each(data, function(day, day_info){
-      if($(selected_day).val() == day) {
-        that.display_special_info(day_info);
+      if(selected_day == day) {
+        var $title = $('<h3>', { text: day_info['title'] });
+        var $text = $('<p>', { text: day_info['text']});
+        var $img_tag  = $('<img>', { src: day_info['image'].slice(1) });
+        
+        that.specials_info_section.empty()
+          .attr('style', 'color: ' + day_info['color'])
+          .append($title)
+          .append($text)
+          .append($img_tag);
       }
     });
   },
 
-  get_json_data: function(selected_item) {
+  get_json_data: function(selected_day) {
     var that = this;
-    console.log(this.cached_data);
-    if(this.cached_data !== null) {
-      this.prepare_display_data(selected_item, this.cached_data);
-    } else {
-      console.log("no cached_data");
-      $.getJSON('data/specials.json', function(response_data){
-        that.cached_data = response_data;
-        that.prepare_display_data(selected_item, response_data);
-      });
-    }
+    $.getJSON('data/specials.json', function(response_data){
+      that.cached_data = response_data;
+      that.display_data(selected_day, response_data);
+    });
   },
 
   remove_submit_btn: function(){
