@@ -7,11 +7,10 @@ function BlogLoader(){
 
 BlogLoader.prototype = {
 	attach_target_divs: function(){
-		console.log('about to attach target divs');
 		var $target_div = $('<div>');
 		$('div#blog h3').each(function(index){
 			var blog_target = $target_div.clone(true) 
-			$(this).after($(blog_target).attr('id', 'post' + (index+1) ))
+			$(this).after(blog_target.attr('id', 'post' + (index+1) ))
 				.data('target_div', blog_target.attr('id') );
 		});
 	},
