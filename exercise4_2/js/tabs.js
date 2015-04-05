@@ -15,7 +15,7 @@ Tab.prototype = {
     this.header_list = $('<ul>', { 'id': 'tab_header' });
 
     this.header_list.insertBefore(this.tabcontents.first());
-      console.log(this.header_list);
+
   },
 
   showRelatedModule: function(list_item){
