@@ -4,11 +4,11 @@ function Blog(blog_list) {
 
 Blog.prototype = {
   show_excerpt: function(headline) {
-    $(headline).attr('class', 'active').parent().siblings('p').slideDown();
+    $(headline).addClass('active').parent().siblings('p').slideDown();
   },
 
   hide_other_excerpts: function() {
-    this.blog_list.find('a.active').removeAttr('class').parent().siblings('p').slideUp();
+    this.blog_list.find('a.active').removeClass('active').parent().siblings('p').slideUp();
   },
 
   add_event_handlers: function() {
@@ -17,7 +17,7 @@ Blog.prototype = {
       e.preventDefault();
 
       //ensure curently active items dont respond to clicks
-      if($(this).attr('class') !== 'active'){
+      if(!$(this).hasClass('active')){
         that.hide_other_excerpts();
         that.show_excerpt(this);
       }
