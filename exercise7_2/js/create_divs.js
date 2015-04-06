@@ -1,7 +1,7 @@
 function DivStack() {
   this.stack_container = "";
-  this.model_stack_item = ""
-  this.addButton = ""
+  this.model_stack_item = "";
+  this.addButton = "";
 }
 
 DivStack.prototype = {
@@ -36,7 +36,6 @@ DivStack.prototype = {
   },
 
   add: function() {
-
     //items are added in a stack-like(LIFO) manner
     this.model_stack_item.clone(true).prependTo(this.stack_container);
   },

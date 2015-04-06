@@ -6,14 +6,14 @@ function SlideShow(slides) {
 
 SlideShow.prototype = {
   init: function() {
-    $('#slideshow li:nth-child(n+2)').hide();//display only hte first slide on page load
+    this.slides.find('li:nth-child(n+2)').hide();//display only hte first slide on page load
     this.move_to_top();
     this.create_nav_area();
     this.start_slideshow();
   },
 
   move_to_top: function() {
-    $('#slideshow').insertBefore('body > :first-child');
+    this.slides.insertBefore('body > :first-child');
   },
 
   is_last_slide: function(slide_items) {
@@ -31,12 +31,12 @@ SlideShow.prototype = {
     if (!this.is_last_slide($(current_slide))) {//if its not the last slide
       return $(current_slide).next()
     } else {
-      return $('#slideshow li:first-child');
+      return this.slides.find('li:first-child');
     }
   },
 
   create_nav_area: function() {
-    this.nav_area = $('<div>', {'id':'nav-area'}).insertAfter($('#slideshow'));
+    this.nav_area = $('<div>', {'id':'nav-area'}).insertAfter(this.slides);
   },
 
   update_nav_area: function(current_slide_index) {

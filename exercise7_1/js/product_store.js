@@ -71,11 +71,7 @@ ProductStore.prototype = {
     $('#catalogue figure').hide();
 
     if(this.filters.colors.length == 0 && this.filters.brands.length == 0) {
-      console.log('colors filter: ' + this.filters.colors.length );
-      console.log('brand filter: ' + this.filters.brands.length);
       current_selection = $('#catalogue figure');
-
-      console.log(current_selection);
     } else {
 
       current_selection = $('#catalogue figure').filter(function() {
@@ -106,8 +102,6 @@ ProductStore.prototype = {
     }
   },
 
-
-
   addEventHandlers: function(){
     that = this;    
     //filter by brand
@@ -127,7 +121,6 @@ ProductStore.prototype = {
       }else {
         that.filters.colors.splice(that.filters.colors.indexOf(this.id), 1);
       }
-
       that.filter(); 
     });
 
