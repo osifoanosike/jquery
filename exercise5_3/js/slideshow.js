@@ -1,6 +1,7 @@
-function SlideShow(total_slides) {
+function SlideShow(slides) {
   this.nav_area = "";
-  this.total_slides = total_slides;
+  this.slides = slides
+  this.total_slides = slides.find('li').length;
 }
 
 SlideShow.prototype = {
@@ -8,6 +9,7 @@ SlideShow.prototype = {
     $('#slideshow li:nth-child(n+2)').hide();//display only hte first slide on page load
     this.move_to_top();
     this.create_nav_area();
+    this.start_slideshow();
   },
 
   move_to_top: function() {
@@ -37,20 +39,22 @@ SlideShow.prototype = {
     this.nav_area = $('<div>', {'id':'nav-area'}).insertAfter($('#slideshow'));
   },
 
-  update_nav_area: function(current_slide_index, total_slide_count) {
-    this.nav_area.text( current_slide_index + ' of ' + total_slide_count);
+  update_nav_area: function(current_slide_index) {
+    this.nav_area.text( current_slide_index + ' of ' + this.total_slides);
   },
 
-  start_slideshow: function() {
-    this.update_nav_area($('#slideshow li:first-child').prevAll().length + 1, this.total_slides)
+  start_slideshow: function() { 
+    var $firstSlide = this.slides.find('li:first-child');
     var that = this;
-    $('#slideshow li:first-child').delay(800)
+
+    this.update_nav_area( $firstSlide.prevAll().length + 1 )    
+    $firstSlide.delay(800)
       .fadeOut(400, function(){ that.show_next_slide(this) });
   }
 }
 
 $(document).ready(function(){
-  var slideShow = new SlideShow($('ul#slideshow > li').length);
+  var slides = $('#slideshow');
+  var slideShow = new SlideShow(slides);
   slideShow.init();
-  slideShow.start_slideshow();
 });
