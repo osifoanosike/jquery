@@ -51,7 +51,7 @@ SelectDivs.prototype = {
   //question 2.1 e: Figure out how many image elements on the page have an alt attribute.
   imagesWithAltAttr: function() {
 
-    var img_with_alt = $('img[attr!=""]');
+    var img_with_alt = $('img[alt!=""]');
     console.log('2.1 e) Number of images with \'alt\' attribute: ' + img_with_alt.length);
   },
 
