@@ -1,55 +1,58 @@
 function SlideShow(slides) {
   this.nav_area = "";
   this.slides = slides
-  this.total_slides = slides.find('li').length;
+  this.totalSlides = slides.find('li').length;
+  this.firstSlide = slides.find('li:first-child');
+  this.activeSlide = "";
 }
 
 SlideShow.prototype = {
   init: function() {
-    this.slides.find('li:nth-child(n+2)').hide();//display only hte first slide on page load
-    this.move_to_top();
-    this.create_nav_area();
-    this.start_slideshow();
+    this.slides.find('li').hide();
+    this.firstSlide.show();
+    this.moveToTop();
+    this.createNavArea();
+    this.startSlideshow();
   },
 
-  move_to_top: function() {
-    this.slides.insertBefore('body > :first-child');
+  moveToTop: function() {
+    $('body').prepend(this.slides);
   },
 
-  is_last_slide: function(slide_items) {
+  isLastSlide: function(slide_items) {
     return ($(slide_items).nextAll().length == 0);
   },
 
-  show_next_slide: function(current_slide) {
-    var that = this, next_slide = this.set_next_slide(current_slide);
-    this.update_nav_area($(next_slide).prevAll().length + 1, this.total_slides);
-    $(next_slide).fadeIn(500).delay(3000)
-      .fadeOut(400, function(){ that.show_next_slide(this) });
+  showNextSlide: function(current_slide) {
+    var that = this, nextSlide = this.setNextSlide(current_slide);
+    this.updateNavArea();
+    $(nextSlide).fadeIn(500).delay(3000)
+      .fadeOut(400, function(){ that.showNextSlide(this) });
   },
 
-  set_next_slide: function(current_slide) {
-    if (!this.is_last_slide($(current_slide))) {//if its not the last slide
+  setNextSlide: function(current_slide) {
+    this.activeSlide = $(current_slide).next();
+    if (!this.isLastSlide($(current_slide))) {//if its not the last slide
       return $(current_slide).next()
     } else {
-      return this.slides.find('li:first-child');
+      return this.firstSlide;
     }
   },
 
-  create_nav_area: function() {
+  createNavArea: function() {
     this.nav_area = $('<div>', {'id':'nav-area'}).insertAfter(this.slides);
   },
 
-  update_nav_area: function(current_slide_index) {
-    this.nav_area.text( current_slide_index + ' of ' + this.total_slides);
+  updateNavArea: function() {
+    this.nav_area.text( (this.activeSlide.prevAll().length + 1) + ' of ' + this.totalSlides);
   },
 
-  start_slideshow: function() { 
-    var $firstSlide = this.slides.find('li:first-child');
+  startSlideshow: function() {
     var that = this;
-
-    this.update_nav_area( $firstSlide.prevAll().length + 1 )    
-    $firstSlide.delay(800)
-      .fadeOut(400, function(){ that.show_next_slide(this) });
+    this.activeSlide = this.firstSlide;
+    this.updateNavArea()    
+    this.activeSlide.delay(800)
+      .fadeOut(400, function(){ that.showNextSlide(this) });
   }
 }
 
