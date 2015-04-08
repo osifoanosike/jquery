@@ -1,12 +1,16 @@
 
 #container {
 	margin: 0 auto;
-	width: 85%;
+	width: 90%;
 	position: relative;
+	box-sizing: border-box;
 }
 
 #filter_section {
+	margin-top: 5em;
 	float: left;
+	width: 20%;
+	font-size: 0.9em;
 }
 
 #catalogue {

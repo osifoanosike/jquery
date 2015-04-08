@@ -26,14 +26,12 @@
 
           <div id="available-filter">
             <div>
-              <input type="radio" name="availablity" value="all" id="check_show_all"/>
-              <label for="check_show_all">All Products</label>
-            </div>
-            <div>
-              <input type="radio" name="availablity" value="available" id="check_show_available"/>
-              <label for="check_show_available">Available Products</label>
+              <input type="checkbox" data-filtertype ="soldout"  data-value="0" id="check_show_all"/>
+              <label for="check_show_all">Show available items</label>
             </div>
           </div>
+
+          <button id="clearBtn">Clear All</button>
         </div>
         
         <div id="catalogue"></div>
