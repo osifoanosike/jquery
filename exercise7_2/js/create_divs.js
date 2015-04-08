@@ -6,18 +6,18 @@ function DivStack() {
 
 DivStack.prototype = {
   init: function() {
-    this.setup_stack();
-    this.create_item_model();
-
+    this.setupStack();
+    this.createItemModel();
+    divStack.addEventHandler();
   },
 
-  create_item_model: function(){
+  createItemModel: function(){
     this.model_stack_item = $('<div>', { 'class': 'stack_item' })
       .css({ 'height':'2em', 'width': '75%', 'border':'1px solid #ccc',
         'border-radius': '3px','margin': '5px', 'background-color':'#fafafa' });
   },
 
-  setup_stack: function(){
+  setupStack: function(){
     //create button
     var $button = $('<button>', {'id':'addBtn', text: 'add item'})
       .css({ 'position': 'absolute', 'bottom': '0', 'right': '0', 'margin': '5px' });
@@ -60,5 +60,5 @@ DivStack.prototype = {
 $(document).ready(function() {
   var divStack = new DivStack();
   divStack.init();
-  divStack.addEventHandler();
+
 });
