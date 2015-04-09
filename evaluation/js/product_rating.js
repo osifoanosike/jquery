@@ -61,6 +61,7 @@ ProductRating.prototype = {
   },
 
   createRatingCheckbox: function(product, rating) {
+    var that = this;
     var ratingCheckbox = $('<input>', {
         'type': 'radio',
         'data-product': product,
@@ -70,20 +71,20 @@ ProductRating.prototype = {
     });
 
     ratingCheckbox.on('click', function() {
-
-      //get and highlight corresponding headers
-      $('th button.selected').removeClass('selected');
-      $('td.selected').removeClass('selected');
-
-      $('th button[data-property="'+ $(this).data('rating') + '"]').addClass('selected');
-      $('td[data-property="'+ $(this).data('product') + '"]').addClass('selected')
+      that.highlightActiveHeaders(this)
     })
     return ratingCheckbox;
   },
 
-  highlightActiveHeaders: function() {
+  highlightActiveHeaders: function(button) {
+     //get and highlight corresponding headers
+      $('th button.selected').removeClass('selected');
+      $('td.selected').removeClass('selected');
 
+      $('th button[data-property="'+ $(button).data('rating') + '"]').addClass('selected');
+      $('td[data-property="'+ $(button).data('product') + '"]').addClass('selected')
   },
+  
   setupProductRating: function(product) {
     var productRow = $('<tr>', {
       'data-product': product
@@ -111,18 +112,18 @@ ProductRating.prototype = {
     }
   },
 
-  disableRating: function(relatedProduct) {
-    var rowELement = $('#productGrid tr');
-    var input = $('tr [data-product="'+ relatedProduct +'"]');
-    input.prop('disable', true);
-  },
+  // disableRating: function(relatedProduct) {
+  //   var rowELement = $('#productGrid tr');
+  //   var input = $('tr [data-product="'+ relatedProduct +'"]');
+  //   input.prop('disable', true);
+  // },
 
-  disableAllRatings: function(){
-    var that = this;
-    $('#productGrid tr').each(function(){
-      $(this).find('input').attr('disabled', "");
-    })
-  },
+  // disableAllRatings: function(){
+  //   var that = this;
+  //   $('#productGrid tr').each(function(){
+  //     $(this).find('input').attr('disabled', "");
+  //   })
+  // },
 
   activateRow: function(selectedProductLabel) {
     // this.disableAllRatings();
