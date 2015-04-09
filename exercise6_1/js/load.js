@@ -20,11 +20,21 @@ BlogLoader.prototype = {
 		$(headline).next('div').load(href[0] + ' #' + href[1] );
 	},
 
+	hideOtherPosts: function(blog_header) {
+		blog_header.closest('li').siblings('li').each(function(index){
+			$(this).find('div').empty();
+			// $(this).empty();
+			console.log($(this).find('a').attr('href'));
+		});
+	},
+
 	addEventHandler: function() {
 		var that = this;
 		$('div#blog ul li a').on('click', function(e){
 			e.preventDefault();
+			that.hideOtherPosts($(this));
 			that.load_target_content($(this).parent());
+			
 		})
 	}
 }

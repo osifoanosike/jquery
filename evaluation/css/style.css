@@ -1,0 +1,39 @@
+body {
+  font: 1.2em calibri;
+  color: #444;
+}
+
+table {
+  border-spacing: 0;
+}
+
+td, th {  
+  text-align: center;
+  padding: 0.6em 1em;
+}
+
+td:nth-child(n+2), th:nth-child(n+2) {
+  border-right: 1px solid #ccc;
+}
+
+td:last-child, th:last-child {
+  border-right: none;
+}
+
+th {
+  text-decoration: none;
+  font-weight: normal;
+}
+
+td button, th button {
+  background-color: inherit;
+  padding: 0.4em 0.4em;
+  border-radius: 0;
+  border: none;
+  font-size: .8em;
+}
+
+.selected {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
