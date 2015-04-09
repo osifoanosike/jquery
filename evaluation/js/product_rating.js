@@ -111,9 +111,6 @@ ProductRating.prototype = {
   },
 
   activateRow: function(selectedProductLabel) {
-    // var x = selectedProductLabel.closest('tr').find('input').each(function(){
-    //   $(this).removeAttr('disabled');
-    // });
     this.activeProduct = selectedProductLabel.data('property');
   },
 
