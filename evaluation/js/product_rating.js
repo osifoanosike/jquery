@@ -11,7 +11,6 @@ ProductRating.prototype = {
     this.createGridStructure();
     this.addGridHeaders();
     this.populateGrid();
-    // this.disableAllRatings();
   },
 
   createGridStructure: function() {
@@ -42,8 +41,6 @@ ProductRating.prototype = {
     });
 
     productButton.on('click', function(){
-      
-
       if($(this).parent().prop('tagName') == 'TD') {
         $(this).parent().addClass('selected').parent('tr').siblings().find('td').removeClass('selected');
         that.activateRow($(this));
@@ -77,14 +74,15 @@ ProductRating.prototype = {
   },
 
   highlightActiveHeaders: function(button) {
-     //get and highlight corresponding headers
-      $('th button.selected').removeClass('selected');
-      $('td.selected').removeClass('selected');
+     
+    //get and highlight corresponding headers
+    $('th button.selected').removeClass('selected');
+    $('td.selected').removeClass('selected');
 
-      $('th button[data-property="'+ $(button).data('rating') + '"]').addClass('selected');
-      $('td[data-property="'+ $(button).data('product') + '"]').addClass('selected')
+    $('th button[data-property="'+ $(button).data('rating') + '"]').addClass('selected');
+    $('td[data-property="'+ $(button).data('product') + '"]').addClass('selected')
   },
-  
+
   setupProductRating: function(product) {
     var productRow = $('<tr>', {
       'data-product': product
@@ -112,22 +110,8 @@ ProductRating.prototype = {
     }
   },
 
-  // disableRating: function(relatedProduct) {
-  //   var rowELement = $('#productGrid tr');
-  //   var input = $('tr [data-product="'+ relatedProduct +'"]');
-  //   input.prop('disable', true);
-  // },
-
-  // disableAllRatings: function(){
-  //   var that = this;
-  //   $('#productGrid tr').each(function(){
-  //     $(this).find('input').attr('disabled', "");
-  //   })
-  // },
 
   activateRow: function(selectedProductLabel) {
-    // this.disableAllRatings();
-
     var x = selectedProductLabel.closest('tr').find('input').each(function(){
       $(this).removeAttr('disabled');
     });
