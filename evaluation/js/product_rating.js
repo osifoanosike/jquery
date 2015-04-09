@@ -49,7 +49,7 @@ ProductRating.prototype = {
          
         //if its the rating header that's clicked and there's a selected product
         if(that.activeProduct.length) {
-          that.setProductRating(that.activeProduct, $(this).data('property'))
+          that.setProductRating($(this).data('property'))
         }
       } 
     })
@@ -110,7 +110,6 @@ ProductRating.prototype = {
     }
   },
 
-
   activateRow: function(selectedProductLabel) {
     var x = selectedProductLabel.closest('tr').find('input').each(function(){
       $(this).removeAttr('disabled');
@@ -118,8 +117,8 @@ ProductRating.prototype = {
     this.activeProduct = selectedProductLabel.data('property');
   },
 
-  setProductRating: function(product, rating) {
-    var xyz = $('tr[data-product="'+ product +'"]').find('td input[data-rating="' + rating +'"]').prop('checked', true);
+  setProductRating: function(rating) {
+    var xyz = $('tr[data-product="'+ this.activeProduct +'"]').find('td input[data-rating="' + rating +'"]').prop('checked', true);
   }
 }
 
