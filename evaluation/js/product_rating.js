@@ -2,6 +2,7 @@ function ProductRating(){
   this.products = ['Coffee', 'Tea', 'Sodas'];
   this.ratingValues = ['Love it', 'Like it', 'No views', 'Dislike it', 'Abhor it'];
   this.activeProduct = "";
+  this.activeRating = "";
 }
 
 ProductRating.prototype = {
@@ -9,8 +10,7 @@ ProductRating.prototype = {
   init: function() {
     this.ratingValues.unshift(' ');
     this.createGridStructure();
-    this.addGridHeaders();
-    this.populateGrid();
+    this.addEventHandlers();
   },
 
   createGridStructure: function() {
@@ -20,6 +20,9 @@ ProductRating.prototype = {
 
     grid.appendTo($('#container'));
     this.productGrid = grid;
+
+    this.addGridHeaders();
+    this.populateGrid();
   },
 
   addGridHeaders: function() {
@@ -27,49 +30,69 @@ ProductRating.prototype = {
     
     for(var i = 0; i < this.ratingValues.length; i++) {
       var headerCell = $('<th>', { 'data-rating': this.ratingValues[i] });
-      headerCell.append(this.createClickableButton(this.ratingValues[i]));
+      headerCell.append(this.createHeaderButton('rating', this.ratingValues[i]));
       ratingsHeader.append(headerCell);
-    }    
+    }
+
     this.productGrid.append(ratingsHeader);
   },
 
-  createClickableButton: function(property) {
-    var that = this;
-    var productButton = $('<button>', {
-      'data-property': property,
-      text: property
+  createHeaderButton: function(headerType, headerProperty) {
+    var headerBtn = $('<button>', {
+      'data-property': headerProperty,
+      text: headerProperty,
+      'class': headerType
     });
 
-    productButton.on('click', function(){
-      if($(this).parent().prop('tagName') == 'TD') {
-        $(this).parent().addClass('selected').parent('tr').siblings().find('td').removeClass('selected');
-        that.activateRow($(this));
-      } else {
-        $(this).addClass('selected').parent().siblings().find('button').removeClass('selected');
-         
-        //if its the rating header that's clicked and there's a selected product
-        if(that.activeProduct.length) {
-          that.setProductRating($(this).data('property'));
-        }
-      } 
-    })
-
-    return productButton;
+    return headerBtn;
   },
 
-  createRatingCheckbox: function(product, rating) {
+
+  clickRatingHeader: function(){
+    var that = this
+    $('button.rating').on('click', function(){
+      $('button.rating.selected').removeClass('selected');
+      $(this).addClass('selected');
+      that.setActiveRating($(this));
+
+      //if its the rating header that's clicked and there's a selected product
+      if(that.activeProduct.length) {
+        that.rateProduct();
+      }
+    });
+  },
+
+  clickProductHeader: function(){
+    var that = this;
+    $('button.product').on('click', function(){
+      $('button.product.selected').removeClass('selected');
+      $(this).addClass('selected');
+      that.setActiveProduct($(this));
+
+      //if its the rating header that's clicked and there's a selected product
+      if(that.activeRating.length) {
+        that.rateProduct();
+      }
+    });
+
+    
+  },
+
+  clickRatingRadio: function() {
+    var that =  this;
+    $('input[type="radio"]').on('click', function() {
+      that.highlightActiveHeaders(this);
+    })
+  },
+
+  createRatingInput: function(product, rating) {
     var that = this;
     var ratingCheckbox = $('<input>', {
         'type': 'radio',
-        'data-product': product,
         'data-rating': rating,
         'value': rating,
         'name': product
     });
-
-    ratingCheckbox.on('click', function() {
-      that.highlightActiveHeaders(this);
-    })
     return ratingCheckbox;
   },
 
@@ -93,9 +116,9 @@ ProductRating.prototype = {
 
       if(i == 0) {
         tableCell = $('<td>',{ 'data-property': product });
-        tableCell.append(this.createClickableButton(product));
+        tableCell.append(this.createHeaderButton('product', product));
       } else { 
-        tableCell.append(this.createRatingCheckbox(product, this.ratingValues[i]));
+        tableCell.append(this.createRatingInput(product, this.ratingValues[i]));
       }
 
       //creates each td containing the chkbox and append it to the row
@@ -110,12 +133,22 @@ ProductRating.prototype = {
     }
   },
 
-  activateRow: function(selectedProductLabel) {
+  setActiveProduct: function(selectedProductLabel) {
     this.activeProduct = selectedProductLabel.data('property');
   },
 
-  setProductRating: function(rating) {
-    var xyz = $('tr[data-product="'+ this.activeProduct +'"]').find('td input[data-rating="' + rating +'"]').prop('checked', true);
+  setActiveRating: function(selectedRating) {
+    this.activeRating = selectedRating.data('property');
+  },
+
+  rateProduct: function() {
+    $('input[name="'+ this.activeProduct +'"][data-rating="'+ this.activeRating +'"]').prop('checked', true);
+  },
+
+  addEventHandlers: function() {
+    this.clickProductHeader();
+    this.clickRatingHeader();
+    this.clickRatingRadio();
   }
 }
 
