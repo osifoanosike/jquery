@@ -18,7 +18,7 @@ ProductRating.prototype = {
       id: "productGrid"
     });
 
-    grid.appendTo($('#container'))
+    grid.appendTo($('#container'));
     this.productGrid = grid;
   },
 
@@ -49,7 +49,7 @@ ProductRating.prototype = {
          
         //if its the rating header that's clicked and there's a selected product
         if(that.activeProduct.length) {
-          that.setProductRating($(this).data('property'))
+          that.setProductRating($(this).data('property'));
         }
       } 
     })
@@ -68,7 +68,7 @@ ProductRating.prototype = {
     });
 
     ratingCheckbox.on('click', function() {
-      that.highlightActiveHeaders(this)
+      that.highlightActiveHeaders(this);
     })
     return ratingCheckbox;
   },
@@ -80,7 +80,7 @@ ProductRating.prototype = {
     $('td.selected').removeClass('selected');
 
     $('th button[data-property="'+ $(button).data('rating') + '"]').addClass('selected');
-    $('td[data-property="'+ $(button).data('product') + '"]').addClass('selected')
+    $('td[data-property="'+ $(button).data('product') + '"]').addClass('selected');
   },
 
   setupProductRating: function(product) {
