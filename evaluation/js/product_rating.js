@@ -17,7 +17,6 @@ ProductRating.prototype = {
     var grid = $('<table>', {
       id: "productGrid"
     });
-
     grid.appendTo($('#container'));
     this.productGrid = grid;
 
@@ -33,7 +32,6 @@ ProductRating.prototype = {
       headerCell.append(this.createHeaderButton('rating', this.ratingValues[i]));
       ratingsHeader.append(headerCell);
     }
-
     this.productGrid.append(ratingsHeader);
   },
 
@@ -43,10 +41,8 @@ ProductRating.prototype = {
       text: headerProperty,
       'class': headerType
     });
-
     return headerBtn;
   },
-
 
   clickRatingHeader: function(){
     var that = this
@@ -73,13 +69,12 @@ ProductRating.prototype = {
       if(that.activeRating.length) {
         that.rateProduct();
       }
-    });
-
-    
+    });    
   },
 
-  clickRatingRadio: function() {
+  clickRatingInput: function() {
     var that =  this;
+
     $('input[type="radio"]').on('click', function() {
       that.highlightActiveHeaders(this);
     })
@@ -87,6 +82,7 @@ ProductRating.prototype = {
 
   createRatingInput: function(product, rating) {
     var that = this;
+
     var ratingCheckbox = $('<input>', {
         'type': 'radio',
         'data-rating': rating,
@@ -96,14 +92,12 @@ ProductRating.prototype = {
     return ratingCheckbox;
   },
 
-  highlightActiveHeaders: function(button) {
-     
-    //get and highlight corresponding headers
-    $('th button.selected').removeClass('selected');
-    $('td.selected').removeClass('selected');
+  highlightActiveHeaders: function(radioButton) {  
+    $('button.rating.selected').removeClass('selected');
+    $('button.product.selected').removeClass('selected');
 
-    $('th button[data-property="'+ $(button).data('rating') + '"]').addClass('selected');
-    $('td[data-property="'+ $(button).data('product') + '"]').addClass('selected');
+    $('button[data-property="'+ $(radioButton).data('rating') + '"]').addClass('selected');
+    $('button[data-property="'+ $(radioButton).prop('name') + '"]').addClass('selected');
   },
 
   setupProductRating: function(product) {
@@ -133,8 +127,8 @@ ProductRating.prototype = {
     }
   },
 
-  setActiveProduct: function(selectedProductLabel) {
-    this.activeProduct = selectedProductLabel.data('property');
+  setActiveProduct: function(selectedProduct) {
+    this.activeProduct = selectedProduct.data('property');
   },
 
   setActiveRating: function(selectedRating) {
@@ -148,7 +142,7 @@ ProductRating.prototype = {
   addEventHandlers: function() {
     this.clickProductHeader();
     this.clickRatingHeader();
-    this.clickRatingRadio();
+    this.clickRatingInput();
   }
 }
 
