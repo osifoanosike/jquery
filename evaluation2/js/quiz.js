@@ -1,11 +1,8 @@
 function QuizApp() {
+  this.TOTAL_NOS_OF_QUESTIONS = 20;
   this.responses = { wrong: [], correct: []};
-  this.currentStore = "";
-  this.currentQuestion = { count:18, text: "" };
-  this.curentAnswer = "";
+  this.currentQuestion = { count: 0, text: "" };
   this.operators = [' + ', ' - ', ' * ', ' / '];
-  this.wrongResponses = [];
-  this.correctResponses = [];
 }
 
 
@@ -16,7 +13,7 @@ QuizApp.prototype = {
   },
 
   chooseOperand: function() {
-    return Math.ceil(Math.random() * 20);
+    return Math.ceil(Math.random() * this.TOTAL_NOS_OF_QUESTIONS);
   },
 
   chooseOperator: function() {
@@ -32,22 +29,20 @@ QuizApp.prototype = {
   },
 
   getUserAnswer: function(){
-    var response = parseInt($('#answerInput').val())
-    return isNaN(response) ? "No answer" : parseInt(response);
+    var response = parseInt($('#answerInput').val().trim())
+    return isNaN(response) ? "No answer" : parseInt(response).toFixed(2);
   },
 
   evaluate: function() {
     //returns true or false and store incorrect questions separately
-    var result = parseInt(eval(this.currentQuestion.text)) ;
+    var result = parseInt(eval(this.currentQuestion.text)).toFixed(2);
     var userResponse = this.getUserAnswer();
 
-    // console.log(result +', user answer: ' + userResponse);
     if(result == userResponse) {
       this.saveResponse(userResponse, "correct");
     } else {
       this.saveResponse(userResponse, "wrong");
     }
-    console.log(this.responses)
   },
 
   saveResponse: function(answer, responseType) {
@@ -75,42 +70,46 @@ QuizApp.prototype = {
       $('#container div').empty()
         .append(question)
         .append(that.createInputBox())
+        .append(that.createNoticeTxt())
         .append(that.createNextButton())
         .append(that.createScoreLabel());
     });
-
-    // this.addEventHandlers();
   },
 
   showExitScreen: function() {
-    var that = this;
-    var completionNoticeTxt = $('<h1>', {text: 'Hi, you just completed The Arithmetic Quiz' })
+    var that = this, uiContainer =  $('#container div');
+    var completionNoticeTxt = $('<h1>', { id: 'completionHeaderTxt', text: 'Hi, you just completed The Arithmetic Quiz' })
                         .css({'color': '#444', 'margin': '8em 0 1em 0', 'font-weight': 'normal'})
                         .insertAfter('<p>Here is your result</p>');
 
-    $('#container div *').fadeOut(500, function(){
-      $('#container div').empty()
+    uiContainer.children().fadeOut(500, function(){
+      uiContainer.empty()
         .append(completionNoticeTxt)
-        .append(that.createCorrectionUI(that.responses.wrong));
+        .append(that.createScoreLabel());
+
+      if(that.responses.wrong.length) {
+        $('#completionHeaderTxt').css('margin', '2em 0 1em 0');
+        uiContainer.append(that.createCorrectionUI(that.responses.wrong))
+      }
     });
   },
 
   solveQuestion: function(question){
-    return eval(question);
+    return eval(question).toFixed(2);
   },
 
   createScoreLabel: function(){
-    var currentScoreTxt = $('<span>', { id: 'currentScoreTxt', text: this.responses.correct.length  + ' out of 20' });
+    var currentScoreTxt = $('<span>', { id: 'currentScoreTxt', text: this.responses.correct.length  + ' out of ' + this.TOTAL_NOS_OF_QUESTIONS });
 
-    return $('<p>', { id: 'currentScoreLbl', text: 'Current Score: ' })
+    return $('<p>', { id: 'currentScoreLbl', text: 'Score: ' })
       .css({'color': '#444', 'margin': '0 1em ', 'font-weight': 'normal'})
       .append(currentScoreTxt);
   },
 
   createCorrectionUI: function(wrongResponses) {
     var question = "", response = "", correctAnswer = "", responseItem = "";
-    var correctionList = $('<ul>').css('list-style-type', 'none');
-    var correctionItem = $('<li>', { id: 'correctionItem'})
+    var correctionListUI = $('<ul>').css('list-style-type', 'none').prepend('<h3>Here are the corrections: </h3');
+    var correctionItemUI = $('<li>', { id: 'correctionItem'})
                           .css({'color': '#454', 'border': '1px solid #ccc', 'border-radius': '3px',
                           'padding': '0.3em .4em', 'margin':'.5em auto', 'background': '#fff'});
    
@@ -120,22 +119,22 @@ QuizApp.prototype = {
       response = responseItem.responseValue;
       correctAnswer = this.solveQuestion(responseItem.question);
 
-      correctionItem.clone().html('<p>' + question + '</p>' +
+      correctionItemUI.clone().html('<p>' + question + '</p>' +
         '<p> Your answer: ' + response + '</p>' +
-        '<p> Correct answer: ' + correctAnswer + '</p>').appendTo(correctionList);
+        '<p> Correct answer: ' + correctAnswer + '</p>').appendTo(correctionListUI);
     }
 
-    return correctionList;
+    return correctionListUI;
   },
 
   createNextButton: function() {
     var that = this;
     var nxtButton = $('<button>', { id: 'nextBtn', text: 'next >' })
-            .css({'color':'#fff', 'margin':'1.5em auto', 'border':'1px solid #cc0', 'border-radius':'5px', 'padding':'0.6em 0.9em', 'font-size':'1.4em', 'display':'block', 'background': '#c00'});  
+            .css({'color':'#fff', 'margin':'1.5em auto', 'border':'1px solid #2d4d4d', 'border-radius':'5px', 'padding':'0.6em 0.9em', 'font-size':'1.4em', 'display':'block', 'background': '#2d4d4d'});  
     
     nxtButton.on('click', function(){
       that.evaluate();
-      if (that.currentQuestion.count < 20) {
+      if (that.currentQuestion.count < that.TOTAL_NOS_OF_QUESTIONS) {
         that.updateQuestionLabel();
         that.updateCurrentScore();
       } else {
@@ -149,10 +148,10 @@ QuizApp.prototype = {
   createQuestionLabelandText: function() {
     this.createQuestion(this.chooseOperand(), this.chooseOperator(), this.chooseOperand());
 
-    var questionText = this.currentQuestion.text
+    var questionText = this.currentQuestion.text;
     var label = $('<span>', { id:'questionLabel', text: 'Question ' + this.currentQuestion.count +'. ' })
-                  .css({ 'margin-right': '2em' });
-    var text = $('<span>', { id:'questionTxt', text: questionText }).css('text-weight', 'bold');
+                  .css('margin-right', '1em');
+    var text = $('<span>', { id:'questionTxt', text: questionText }).css('font-weight', 'bold');
     
     return $('<h2>').append(label).append(text)
       .css({'color': '#444', 'margin': '8em 0 1em 0', 'font-weight': 'normal'});
@@ -167,7 +166,7 @@ QuizApp.prototype = {
 
   updateCurrentScore: function() {
     console.log(this.responses.correct.length);
-    $('#currentScoreTxt').text(this.responses.correct.length  + ' out of 20');
+    $('#currentScoreTxt').text(this.responses.correct.length  + ' out of ' + this.TOTAL_NOS_OF_QUESTIONS);
   },
 
   createInputBox: function() {
@@ -180,8 +179,9 @@ QuizApp.prototype = {
     return input;
   },
 
-  showScore: function() {
-    return this.responses.correct.count + 'out of 20';
+  createNoticeTxt: function() {
+    return $('<p>', { text: '**FYI: All input would be evaluated at two-decimal precision.' })
+                  .css({'color':'red', 'font-size': '.8em'});
   },
 
   showWelcomeScreen: function() {
@@ -192,17 +192,15 @@ QuizApp.prototype = {
     this.showMainUI();
   },
 
-  //Events
-  clickNextButton: function(){
-    var that = this;
-    var btn = $('#nextBtn').on('click', function(){
-      that.updateQuestionLabel();
-      that.updateCurrentScore();
-    });
-  },
+  // clickNextButton: function(){
+  //   var that = this;
+  //   var btn = $('#nextBtn').on('click', function(){
+  //     that.updateQuestionLabel();
+  //     that.updateCurrentScore();
+  //   });
+  // },
 
   clickStartButton: function() {
-
     var that = this;
     $('#startQuizBtn').on('click', function() {
       that.startQuiz();
@@ -214,8 +212,6 @@ QuizApp.prototype = {
     // this.clickNextButton();
   }
 }
-
-
 
 $(document).ready(function(){
   var quizApp = new QuizApp();
