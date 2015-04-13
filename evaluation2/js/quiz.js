@@ -183,7 +183,6 @@ QuizApp.prototype = {
     if (this.currentQuestion.count < this.nosOfQuestions) {
       this.updateQuestionLabel();
       this.updateCurrentScore();
-      console.log(this.responses);
     } else {
       this.showExitScreen();
     }    
