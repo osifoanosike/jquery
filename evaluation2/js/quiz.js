@@ -1,6 +1,6 @@
-function QuizApp(uiContainer) {
+function QuizApp(uiContainer, nosOfQuestions) {
   this.uiContainer = uiContainer;
-  this.TOTAL_NOS_OF_QUESTIONS = 20;
+  this.nosOfQuestions = nosOfQuestions;
   this.responses = { wrong: [], correct: []};
   this.currentQuestion = { count: 0, text: "" };
   this.operators = [' + ', ' - ', ' * ', ' / '];
@@ -73,7 +73,7 @@ QuizApp.prototype = {
   },
 
   createScoreLabel: function(){
-    var currentScoreTxt = $('<span>', { id: 'currentScoreTxt', text: this.responses.correct.length  + ' out of ' + this.TOTAL_NOS_OF_QUESTIONS });
+    var currentScoreTxt = $('<span>', { id: 'currentScoreTxt', text: this.responses.correct.length  + ' out of ' + this.nosOfQuestions });
 
     return $('<p>', { id: 'currentScoreLbl', text: 'Score: ' })
       .append(currentScoreTxt);
@@ -90,7 +90,7 @@ QuizApp.prototype = {
   },
 
   chooseOperand: function() {
-    return Math.ceil(Math.random() * this.TOTAL_NOS_OF_QUESTIONS);
+    return Math.ceil(Math.random() * this.nosOfQuestions);
   },
 
   chooseOperator: function() {
@@ -137,8 +137,7 @@ QuizApp.prototype = {
   },
 
   updateCurrentScore: function() {
-    console.log(this.responses.correct.length);
-    $('#currentScoreTxt').text(this.responses.correct.length  + ' out of ' + this.TOTAL_NOS_OF_QUESTIONS);
+    $('#currentScoreTxt').text(this.responses.correct.length  + ' out of ' + this.nosOfQuestions);
   },
   
 
@@ -179,7 +178,17 @@ QuizApp.prototype = {
     return correctionListUI;
   },
 
-    /////----ahow final exit view ------/////
+  clickNextButton: function() {
+    this.evaluate();
+    if (this.currentQuestion.count < this.nosOfQuestions) {
+      this.updateQuestionLabel();
+      this.updateCurrentScore();
+      console.log(this.responses);
+    } else {
+      this.showExitScreen();
+    }    
+  },
+
   ///manage event handling 
   addEventHandlers: function() {
     var that = this;
@@ -189,19 +198,13 @@ QuizApp.prototype = {
     });
 
     $('#container').on('click', '#nextBtn', function(){
-      that.evaluate();
-      if (that.currentQuestion.count < 20) {
-        that.updateQuestionLabel();
-        that.updateCurrentScore();
-      } else {
-        that.showExitScreen();
-      }    
+      that.clickNextButton()
     });
   }
 }
 
 $(document).ready(function(){
   var uiContainer = $('#container');
-  var quizApp = new QuizApp(uiContainer);
+  var quizApp = new QuizApp(uiContainer, 20);
   quizApp.init();
 });
