@@ -2,7 +2,7 @@ function DivStack() {
   this.stack_container = "";
   this.model_stack_item = "";
   this.addButton = "";
-  this.stackItemCount = 0;
+  this.stackItemCount = 1;
 }
 
 DivStack.prototype = {
