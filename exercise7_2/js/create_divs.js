@@ -2,13 +2,14 @@ function DivStack() {
   this.stack_container = "";
   this.model_stack_item = "";
   this.addButton = "";
+  this.stackItemCount = 0;
 }
 
 DivStack.prototype = {
   init: function() {
     this.setupStack();
     this.createItemModel();
-    divStack.addEventHandler();
+    this.addEventHandler();
   },
 
   createItemModel: function(){
@@ -37,7 +38,9 @@ DivStack.prototype = {
 
   add: function() {
     //items are added in a stack-like(LIFO) manner
-    this.model_stack_item.clone(true).prependTo(this.stack_container);
+    this.model_stack_item.clone(true)
+      .addClass('item' + this.stackItemCount++ )
+      .prependTo(this.stack_container);
   },
 
   addEventHandler: function() {
